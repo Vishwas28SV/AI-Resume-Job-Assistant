@@ -36,6 +36,3 @@ resume-ai/
 ├── .env
 └── static/
 └── index.html
-
-yaml
-Copy code
