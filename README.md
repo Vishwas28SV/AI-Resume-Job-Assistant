@@ -36,3 +36,7 @@ resume-ai/
 ├── .env
 └── static/
 └── index.html
+
+NOTE: Add OPENAI_API_KEY
+
+ADD: python -m uvicorn main:app --reload
