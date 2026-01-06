@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>AI Resume & Job Assistant</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 140px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        .actions {
+            margin-bottom: 20px;
+        }
+
+        .output {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            min-height: 120px;
+        }
+
+        .loading {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 13px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>AI Resume & Job Assistant</h1>
+    <p class="subtitle">
+        Optimize resumes, generate cover letters, and prepare for interviews using AI
+    </p>
+
+    <label><strong>Resume</strong></label>
+    <textarea id="resume" placeholder="Paste your resume here..."></textarea>
+
+    <label><strong>Job Description</strong></label>
+    <textarea id="job" placeholder="Paste the job description here..."></textarea>
+
+    <div class="actions">
+        <button onclick="optimizeResume()">Optimize Resume</button>
+        <button onclick="generateCover()">Generate Cover Letter</button>
+        <button onclick="interviewPrep()">Interview Prep</button>
+    </div>
+
+    <div id="output" class="output">
+        Output will appear here...
+    </div>
+</div>
+
+<footer>
+    Built with FastAPI + OpenAI API
+</footer>
+
+<script>
+    const outputDiv = document.getElementById("output");
+
+    function setLoading() {
+        outputDiv.innerHTML = "<span class='loading'>Processing... Please wait.</span>";
+    }
+
+    function showResult(text) {
+        outputDiv.textContent = text;
+    }
+
+    function showError(err) {
+        outputDiv.textContent = "Error: " + err;
+    }
+
+    async function optimizeResume() {
+        setLoading();
+        try {
+            const res = await fetch("/optimize-resume", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    resume: document.getElementById("resume").value,
+                    job_description: document.getElementById("job").value
+                })
+            });
+            const data = await res.json();
+            showResult(data.result);
+        } catch (e) {
+            showError(e);
+        }
+    }
+
+    async function generateCover() {
+        setLoading();
+        try {
+            const res = await fetch("/generate-cover-letter", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    resume: document.getElementById("resume").value,
+                    job_description: document.getElementById("job").value
+                })
+            });
+            const data = await res.json();
+            showResult(data.result);
+        } catch (e) {
+            showError(e);
+        }
+    }
+
+    async function interviewPrep() {
+        setLoading();
+        try {
+            const res = await fetch("/interview-prep", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    job_description: document.getElementById("job").value
+                })
+            });
+            const data = await res.json();
+            showResult(data.result);
+        } catch (e) {
+            showError(e);
+        }
+    }
+</script>
+
+</body>
+</html>
