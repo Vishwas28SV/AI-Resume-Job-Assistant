@@ -39,4 +39,4 @@ resume-ai/
 
 NOTE: Add OPENAI_API_KEY
 
-ADD: python -m uvicorn main:app --reload
+RUN: python -m uvicorn main:app --reload
